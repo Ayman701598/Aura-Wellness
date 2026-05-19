@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura Wellness — Boutique Bien-être</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3EE;
+    --sage: #8A9E85;
+    --sage-light: #B5C4B1;
+    --terracotta: #C4785A;
+    --terracotta-light: #D9957A;
+    --dark: #2A2620;
+    --muted: #8C8680;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(247,243,238,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(138,158,133,0.2);
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--dark);
+  }
+
+  .logo span { color: var(--terracotta); font-style: italic; }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--dark); }
+
+  .nav-cart {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--dark);
+    color: var(--cream);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .nav-cart:hover { background: var(--terracotta); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 80px;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--sage-light);
+    color: var(--dark);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    width: fit-content;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--sage);
+    border-radius: 50%;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .hero p {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 420px;
+    margin-bottom: 40px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background: var(--dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(42,38,32,0.2);
+  }
+
+  .btn-secondary {
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: gap 0.3s;
+  }
+
+  .btn-secondary:hover { gap: 14px; }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 1.2s ease forwards;
+  }
+
+  .hero-visual {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #D4C5B5 0%, #B5C4B1 50%, #C4785A22 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .hero-circle {
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #F7F3EE, #D4C5B5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8rem;
+    box-shadow: 0 40px 80px rgba(42,38,32,0.15);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .hero-tags {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tag {
+    background: rgba(247,243,238,0.9);
+    backdrop-filter: blur(8px);
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(42,38,32,0.1);
+  }
+
+  /* STATS */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 60px 80px;
+    border-top: 1px solid rgba(138,158,133,0.2);
+    border-bottom: 1px solid rgba(138,158,133,0.2);
+  }
+
+  .stat {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: var(--terracotta);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  /* PRODUCTS */
+  .products {
+    padding: 100px 80px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 60px;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+  }
+
+  .section-title em { font-style: italic; color: var(--terracotta); }
+
+  .view-all {
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--dark);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .view-all:hover { color: var(--terracotta); border-color: var(--terracotta); }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.4s, box-shadow 0.4s;
+    cursor: pointer;
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 24px 60px rgba(42,38,32,0.12);
+  }
+
+  .product-card:first-child {
+    grid-row: span 2;
+  }
+
+  .product-img {
+    background: linear-gradient(135deg, #EDE8E3, #D4C5B5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    position: relative;
+  }
+
+  .product-card:first-child .product-img {
+    height: 340px;
+  }
+
+  .product-img { height: 200px; }
+
+  .product-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--terracotta);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .product-badge.new { background: var(--sage); }
+
+  .product-info {
+    padding: 22px;
+  }
+
+  .product-category {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .product-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-price {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--dark);
+  }
+
+  .product-price span {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-decoration: line-through;
+    margin-left: 6px;
+  }
+
+  .add-btn {
+    background: var(--dark);
+    color: white;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.2s;
+  }
+
+  .add-btn:hover {
+    background: var(--terracotta);
+    transform: scale(1.1);
+  }
+
+  .stars { color: #E8B86D; font-size: 0.8rem; margin-bottom: 8px; }
+
+  /* BANNER */
+  .banner {
+    margin: 0 80px 100px;
+    background: var(--dark);
+    border-radius: 28px;
+    padding: 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .banner::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(196,120,90,0.3), transparent);
+    border-radius: 50%;
+  }
+
+  .banner-content { position: relative; z-index: 1; }
+
+  .banner h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .banner h2 em { font-style: italic; color: var(--terracotta-light); }
+
+  .banner p {
+    color: rgba(247,243,238,0.6);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+
+  .banner-form {
+    display: flex;
+    gap: 0;
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    padding: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .banner-form input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 12px 20px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  .banner-form input::placeholder { color: rgba(255,255,255,0.35); }
+
+  .banner-form button {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .banner-form button:hover { background: var(--terracotta-light); }
+
+  .banner-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; z-index: 1;
+    font-size: 10rem;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+    animation: float 5s ease-in-out infinite;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 0 80px 100px;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 60px;
+  }
+
+  .testimonial {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    position: relative;
+  }
+
+  .testimonial::before {
+    content: '"';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: var(--sage-light);
+    position: absolute;
+    top: 10px;
+    right: 24px;
+    line-height: 1;
+  }
+
+  .testimonial p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sage-light), var(--terracotta));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .author-info strong { display: block; font-size: 0.9rem; }
+  .author-info span { font-size: 0.78rem; color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 60px 80px 40px;
+    color: rgba(247,243,238,0.6);
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 40px;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--cream);
+    margin-bottom: 16px;
+  }
+
+  .footer-logo span { color: var(--terracotta-light); font-style: italic; }
+
+  footer p { font-size: 0.85rem; line-height: 1.7; }
+
+  .footer-col h4 {
+    color: var(--cream);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    color: rgba(247,243,238,0.5);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s;
+  }
+  .footer-col ul li a:hover { color: var(--cream); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--dark);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* CART BADGE */
+  .cart-count {
+    background: var(--terracotta);
+    color: white;
+    border-radius: 50%;
+    width: 18px; height: 18px;
+    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-16px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Aura <span>Wellness</span></div>
+  <ul class="nav-links">
+    <li><a href="#produits">Produits</a></li>
+    <li><a href="#about">Notre mission</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cart" onclick="showToast('🛒 Panier ouvert')">
+    🛍️ Panier &nbsp;<span class="cart-count" id="cartCount">0</span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">✦ Livraison gratuite dès 49€</div>
+    <h1>Ton bien-être,<br><em>réinventé</em><br>chaque jour</h1>
+    <p>Des produits naturels soigneusement sélectionnés pour t'accompagner vers une vie plus saine, plus sereine, plus toi.</p>
+    <div class="hero-actions">
+      <a href="#produits" class="btn-primary">Découvrir la boutique</a>
+      <a href="#about" class="btn-secondary">Notre histoire →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-circle">🌿</div>
+      <div class="hero-tags">
+        <div class="tag">🌱 100% Naturel</div>
+        <div class="tag">⭐ 4.9/5 — 2 400 avis</div>
+        <div class="tag">🚚 Livraison 48h</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <span class="stat-num">12K+</span>
+    <span class="stat-label">Clients satisfaits</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">98%</span>
+    <span class="stat-label">Recommandent nos produits</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">48h</span>
+    <span class="stat-label">Livraison express</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">30j</span>
+    <span class="stat-label">Satisfait ou remboursé</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="produits">
+  <div class="section-header">
+    <div>
+      <div class="section-label">✦ Sélection du moment</div>
+      <h2 class="section-title">Nos <em>bestsellers</em></h2>
+    </div>
+    <a href="#" class="view-all">Voir tout le catalogue</a>
+  </div>
+
+  <div class="products-grid">
+
+    <div class="product-card" onclick="addToCart('Huile CBD Premium')">
+      <div class="product-img" style="height:340px">
+        🌿
+        <div class="product-badge">Bestseller</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Relaxation</div>
+        <div class="stars">★★★★★</div>
+        <div class="product-name">Huile CBD Premium 1000mg</div>
+        <div class="product-desc">Formule full-spectrum bio pour une relaxation profonde et un sommeil réparateur.</div>
+        <div class="product-footer">
+          <div class="product-price">49,90€ <span>69€</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="addToCart('Complément Sommeil')">
+      <div class="product-img">
+        🌙
+        <div class="product-badge new">Nouveau</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Sommeil</div>
+        <div class="stars">★★★★★</div>
+        <div class="product-name">Complexe Sommeil Profond</div>
+        <div class="product-desc">Mélatonine + Ashwagandha + Magnésium pour des nuits parfaites.</div>
+        <div class="product-footer">
+          <div class="product-price">32,90€ <span>44€</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="addToCart('Roller Jade')">
+      <div class="product-img">
+        💎
+      </div>
+      <div class="product-info">
+        <div class="product-category">Beauté naturelle</div>
+        <div class="stars">★★★★☆</div>
+        <div class="product-name">Roller Jade Visage</div>
+        <div class="product-desc">Pierre de jade authentique pour drainer, tonifier et éclat.</div>
+        <div class="product-footer">
+          <div class="product-price">24,90€ <span>35€</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" onclick="addToCart('Coffret Méditation')">
+      <div class="product-img">
+        🕯️
+        <div class="product-badge">-30%</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Méditation</div>
+        <div class="stars">★★★★★</div>
+        <div class="product-name">Coffret Rituel Zen</div>
+        <div class="product-desc">Bougies naturelles, encens & guide de méditation guidée.</div>
+        <div class="product-footer">
+          <div class="product-price">39,90€ <span>57€</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-content">
+    <h2>Rejoins notre<br><em>communauté</em><br>bien-être</h2>
+    <p>Reçois nos conseils exclusifs, des offres réservées aux membres et découvre nos nouvelles collections en avant-première.</p>
+    <div class="banner-form">
+      <input type="email" placeholder="ton@email.com">
+      <button onclick="showToast('✅ Inscription confirmée !')">S'abonner</button>
+    </div>
+  </div>
+  <div class="banner-visual">🌸</div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="avis">
+  <div class="section-header">
+    <div>
+      <div class="section-label">✦ Ils nous font confiance</div>
+      <h2 class="section-title">Ce qu'ils en <em>disent</em></h2>
+    </div>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>L'huile CBD a complètement changé mes nuits. Je dors enfin profondément et je me réveille reposée. Je recommande à 100%.</p>
+      <div class="testimonial-author">
+        <div class="avatar">👩</div>
+        <div class="author-info">
+          <strong>Sophie M.</strong>
+          <span>Cliente depuis 8 mois</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>Le coffret Rituel Zen est magnifique. Un cadeau parfait pour soi ou ses proches. La qualité est au rendez-vous et la livraison ultra rapide.</p>
+      <div class="testimonial-author">
+        <div class="avatar">👨</div>
+        <div class="author-info">
+          <strong>Thomas R.</strong>
+          <span>Client depuis 3 mois</span>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>Enfin une boutique qui propose de vrais produits naturels sans ingrédients douteux. Le service client est aux petits soins. Merci !</p>
+      <div class="testimonial-author">
+        <div class="avatar">👩</div>
+        <div class="author-info">
+          <strong>Amina K.</strong>
+          <span>Cliente depuis 1 an</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Aura <span>Wellness</span></div>
+      <p>Des produits naturels sélectionnés avec soin pour prendre soin de toi, au quotidien.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Boutique</h4>
+      <ul>
+        <li><a href="#">Tous les produits</a></li>
+        <li><a href="#">Nouveautés</a></li>
+        <li><a href="#">Promotions</a></li>
+        <li><a href="#">Coffrets cadeaux</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Aide</h4>
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Livraison</a></li>
+        <li><a href="#">Retours</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Légal</h4>
+      <ul>
+        <li><a href="#">CGV</a></li>
+        <li><a href="#">Confidentialité</a></li>
+        <li><a href="#">Mentions légales</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Aura Wellness. Tous droits réservés.</span>
+    <span>Fait avec 🌿 pour ton bien-être</span>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  let cartCount = 0;
+
+  function addToCart(product) {
+    cartCount++;
+    document.getElementById('cartCount').textContent = cartCount;
+    showToast('✅ ' + product + ' ajouté au panier !');
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.product-card, .testimonial, .stat').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
